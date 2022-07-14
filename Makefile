@@ -43,7 +43,7 @@ GO111MODULE = on
 # ====================================================================================
 # Setup Images
 
-DOCKER_REGISTRY := crossplane
+DOCKER_REGISTRY := nascimento
 IMAGES = provider-jet-aws provider-jet-aws-controller
 -include build/makelib/image.mk
 

@@ -1,3 +1,41 @@
+## CUSTOM BUILD
+
+> ! PERSONAL USAGE FOR TESTS
+
+My notes:
+
+```bash
+export BUILD_REGISTRY=nascimento
+export DOCKER_REGISTRY=nascimento
+export REGISTRIES=nascimento
+export VERSION=v0.4.0-rede
+export BUILDER_HOME=/tmp/upbound
+
+find package/crds -type f -name '*.yaml' -exec rename 's/\.yaml$/.backup/' {} +
+
+find package/crds -type f -name 'aws.jet*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+
+find package/crds -type f -name '*glue.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*kafka.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*kinesis.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*kms.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*lambda.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*rds.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*s3.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*secretsmanager.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*sns.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+find package/crds -type f -name '*sqs.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+
+
+make build -j4 # make build.all -j4 # AMD and ARM
+make publish -j4
+
+docker tag nascimento/provider-jet-aws-controller-amd64:${VERSION} nascimento/provider-jet-aws-controller:${VERSION}
+docker tag nascimento/provider-jet-aws-amd64:${VERSION} nascimento/provider-jet-aws:${VERSION}
+docker push nascimento/provider-jet-aws-controller:${VERSION}
+docker push nascimento/provider-jet-aws:${VERSION}
+```
+
 # Terrajet AWS Provider
 
 `provider-jet-aws` is a [Crossplane](https://crossplane.io/) provider that is
@@ -9,6 +47,7 @@ generation tools and exposes XRM-conformant managed resources for
 
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://github.com/crossplane-contrib/provider-jet-aws/releases):
+
 ```
 kubectl crossplane install provider crossplane/provider-jet-aws:v0.2.1
 ```
@@ -28,11 +67,11 @@ open an [issue](https://github.com/crossplane/provider-jet-aws/issues).
 
 Please use the following to reach members of the community:
 
-* Slack: Join our [slack channel](https://slack.crossplane.io)
-* Forums:
+- Slack: Join our [slack channel](https://slack.crossplane.io)
+- Forums:
   [crossplane-dev](https://groups.google.com/forum/#!forum/crossplane-dev)
-* Twitter: [@crossplane_io](https://twitter.com/crossplane_io)
-* Email: [info@crossplane.io](mailto:info@crossplane.io)
+- Twitter: [@crossplane_io](https://twitter.com/crossplane_io)
+- Email: [info@crossplane.io](mailto:info@crossplane.io)
 
 ## Governance and Owners
 
