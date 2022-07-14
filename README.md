@@ -11,20 +11,25 @@ export REGISTRIES=nascimento
 export VERSION=v0.4.0-rede
 export BUILDER_HOME=/tmp/upbound
 
-find package/crds -type f -name '*.yaml' -exec rename 's/\.yaml$/.backup/' {} +
+crds=( glue kafka kinesis kms lambda rds s3 secretsmanager sns sqs )
 
+## Backup and Disable CRDs
+find package/crds -type f -name '*.yaml' -exec rename 's/\.yaml$/.backup/' {} +
+for i in "${crds[@]}"
+do
+	find package/crds -type f -name "*$i.aws*.backup" -exec rename 's/\.backup$/.yaml/' {} +
+done
 find package/crds -type f -name 'aws.jet*.backup' -exec rename 's/\.backup$/.yaml/' {} +
 
-find package/crds -type f -name '*glue.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*kafka.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*kinesis.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*kms.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*lambda.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*rds.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*s3.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*secretsmanager.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*sns.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
-find package/crds -type f -name '*sqs.aws*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+
+## Backup and Disable Controllers
+sed -e '/github.com\/crossplane-contrib\/provider-jet-aws\/internal\/controller/ s/^#*/\/\//' -i.backup ./internal/controller/zz_setup.go
+for i in "${crds[@]}"
+do
+	sed -e "/controller\/$i/ s/\/\///" -i.backup ./internal/controller/zz_setup.go
+done
+sed -e "/controller\/providerconfig/ s/\/\///" -i.backup ./internal/controller/zz_setup.go
+
 
 
 make build -j4 # make build.all -j4 # AMD and ARM
@@ -34,6 +39,17 @@ docker tag nascimento/provider-jet-aws-controller-amd64:${VERSION} nascimento/pr
 docker tag nascimento/provider-jet-aws-amd64:${VERSION} nascimento/provider-jet-aws:${VERSION}
 docker push nascimento/provider-jet-aws-controller:${VERSION}
 docker push nascimento/provider-jet-aws:${VERSION}
+```
+
+Run:
+
+```bash
+export TERRAFORM_VERSION=1.0.5
+export TERRAFORM_PROVIDER_SOURCE="hashicorp/aws"
+export TERRAFORM_PROVIDER_VERSION=3.56.0
+
+
+--terraform-version=3.56.0 --terraform-provider-source="hashicorp/aws" --terraform-provider-version=1.0.5
 ```
 
 # Terrajet AWS Provider
