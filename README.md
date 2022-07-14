@@ -35,10 +35,11 @@ sed -e "/controller\/providerconfig/ s/\/\///" -i.backup ./internal/controller/z
 make build -j4 # make build.all -j4 # AMD and ARM
 make publish -j4
 
-docker tag nascimento/provider-jet-aws-controller-amd64:${VERSION} nascimento/provider-jet-aws-controller:${VERSION}
-docker tag nascimento/provider-jet-aws-amd64:${VERSION} nascimento/provider-jet-aws:${VERSION}
-docker push nascimento/provider-jet-aws-controller:${VERSION}
-docker push nascimento/provider-jet-aws:${VERSION}
+docker manifest create nascimento/provider-jet-aws-controller:${VERSION} --amend nascimento/provider-jet-aws-controller-amd64:${VERSION} --amend nascimento/provider-jet-aws-controller-arm64:${VERSION}
+docker manifest push nascimento/provider-jet-aws-controller:${VERSION}
+
+docker manifest create nascimento/provider-jet-aws:${VERSION} --amend nascimento/provider-jet-aws-amd64:${VERSION} --amend nascimento/provider-jet-aws-arm64:${VERSION}
+docker manifest push nascimento/provider-jet-aws:${VERSION}
 ```
 
 Run:
