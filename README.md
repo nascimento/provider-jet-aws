@@ -1,3 +1,58 @@
+# Rede Annotations
+
+```bash
+
+export BUILD_REGISTRY=nascimento
+export DOCKER_REGISTRY=nascimento
+export REGISTRIES=nascimento
+export VERSION=v0.5.0-rede
+export BUILDER_HOME=/tmp/upbound
+
+crds=( appmesh dynamodb glue kinesis kms lambda rds s3 secretsmanager sns sqs )
+
+## Backup and Disable CRDs
+find package/crds -type f -name '*.yaml' -exec rename 's/\.yaml$/.backup/' {} +
+for i in "${crds[@]}"
+do
+	find package/crds -type f -name "*$i.aws*.backup" -exec rename 's/\.backup$/.yaml/' {} +
+done
+find package/crds -type f -name 'aws.jet*.backup' -exec rename 's/\.backup$/.yaml/' {} +
+
+
+## Backup and Disable Controllers
+sed -e '/github.com\/crossplane-contrib\/provider-jet-aws\/internal\/controller/ s/^#*/\/\//' -i.backup ./internal/controller/zz_setup.go
+for i in "${crds[@]}"
+do
+	sed -e "/controller\/$i/ s/\/\///" -i.backup ./internal/controller/zz_setup.go
+done
+sed -e "/controller\/providerconfig/ s/\/\///" -i.backup ./internal/controller/zz_setup.go
+
+## Setup disable
+sed -e '/.Setup,/ s/^#*/\/\//' -i.backup ./internal/controller/zz_setup.go
+for i in "${crds[@]}"
+do
+	tempcrds=(`grep -e "/controller\/$i/" ./internal/controller/zz_setup.go | awk '{print $1}'`)
+  for j in "${tempcrds[@]}"
+  do
+    sed -e "/	$j\.Setup/ s/\/\///" -i.backup ./internal/controller/zz_setup.go
+  done
+done
+sed -e "/	providerconfig\.Setup/ s/\/\///" -i.backup ./internal/controller/zz_setup.go
+
+
+> Verificar se existem imports perdidos no `./internal/controller/zz_setup.go`
+
+make build -j4 # make build.all -j4 # AMD and ARM
+make publish -j4
+
+docker manifest create nascimento/provider-jet-aws-controller:${VERSION} --amend nascimento/provider-jet-aws-controller-amd64:${VERSION} --amend nascimento/provider-jet-aws-controller-arm64:${VERSION}
+docker manifest push nascimento/provider-jet-aws-controller:${VERSION}
+
+docker manifest create nascimento/provider-jet-aws:${VERSION} --amend nascimento/provider-jet-aws-amd64:${VERSION} --amend nascimento/provider-jet-aws-arm64:${VERSION}
+docker manifest push nascimento/provider-jet-aws:${VERSION}
+
+```
+
 # Terrajet AWS Provider
 
 `provider-jet-aws` is a [Crossplane](https://crossplane.io/) provider that is
@@ -9,6 +64,7 @@ generation tools and exposes XRM-conformant managed resources for
 
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://github.com/crossplane-contrib/provider-jet-aws/releases):
+
 ```
 kubectl crossplane install provider crossplane/provider-jet-aws:v0.2.1
 ```
@@ -28,11 +84,11 @@ open an [issue](https://github.com/crossplane/provider-jet-aws/issues).
 
 Please use the following to reach members of the community:
 
-* Slack: Join our [slack channel](https://slack.crossplane.io)
-* Forums:
+- Slack: Join our [slack channel](https://slack.crossplane.io)
+- Forums:
   [crossplane-dev](https://groups.google.com/forum/#!forum/crossplane-dev)
-* Twitter: [@crossplane_io](https://twitter.com/crossplane_io)
-* Email: [info@crossplane.io](mailto:info@crossplane.io)
+- Twitter: [@crossplane_io](https://twitter.com/crossplane_io)
+- Email: [info@crossplane.io](mailto:info@crossplane.io)
 
 ## Governance and Owners
 
