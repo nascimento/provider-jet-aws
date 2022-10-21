@@ -8,7 +8,7 @@ export REGISTRIES=nascimento
 export VERSION=v0.5.0-rede
 export BUILDER_HOME=/tmp/upbound
 
-crds=( appmesh dynamodb glue kinesis kms lambda rds s3 secretsmanager sns sqs )
+crds=( dynamodb glue kinesis kms lambda rds s3 secretsmanager sns sqs ec2 elasticache )
 
 ## Backup and Disable CRDs
 find package/crds -type f -name '*.yaml' -exec rename 's/\.yaml$/.backup/' {} +
