@@ -17,14 +17,6 @@ limitations under the License.
 package controller
 
 import (
-	clusterelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/cluster"
-	"github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/globalreplicationgroup"
-	parametergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/parametergroup"
-	"github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/replicationgroup"
-	securitygroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/securitygroup"
-	subnetgroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/subnetgroup"
-	"github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/user"
-	usergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/usergroup"
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/crossplane/terrajet/pkg/controller"
@@ -86,13 +78,13 @@ import (
 	//	deploymentstrategy "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appconfig/deploymentstrategy"
 	//	environment "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appconfig/environment"
 	//	hostedconfigurationversion "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appconfig/hostedconfigurationversion"
-	//	gatewayroute "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/gatewayroute"
-	//	mesh "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/mesh"
-	//	routeappmesh "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/route"
-	//	virtualgateway "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualgateway"
-	//	virtualnode "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualnode"
-	//	virtualrouter "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualrouter"
-	//	virtualservice "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualservice"
+	gatewayroute "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/gatewayroute"
+	mesh "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/mesh"
+	routeappmesh "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/route"
+	virtualgateway "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualgateway"
+	virtualnode "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualnode"
+	virtualrouter "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualrouter"
+	virtualservice "github.com/crossplane-contrib/provider-jet-aws/internal/controller/appmesh/virtualservice"
 
 	//	autoscalingconfigurationversion "github.com/crossplane-contrib/provider-jet-aws/internal/controller/apprunner/autoscalingconfigurationversion"
 	//	connection "github.com/crossplane-contrib/provider-jet-aws/internal/controller/apprunner/connection"
@@ -295,7 +287,74 @@ import (
 	//	routetable "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/routetable"
 	//	routetableassociation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/routetableassociation"
 	securitygroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/securitygroup"
-
+	//	securitygrouprule "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/securitygrouprule"
+	//	snapshotcreatevolumepermission "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/snapshotcreatevolumepermission"
+	//	spotdatafeedsubscription "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/spotdatafeedsubscription"
+	//	spotfleetrequest "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/spotfleetrequest"
+	//	spotinstancerequest "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/spotinstancerequest"
+	//	subnet "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/subnet"
+	//	tagec2 "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/tag"
+	//	trafficmirrorfilter "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/trafficmirrorfilter"
+	//	trafficmirrorfilterrule "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/trafficmirrorfilterrule"
+	//	trafficmirrorsession "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/trafficmirrorsession"
+	//	trafficmirrortarget "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/trafficmirrortarget"
+	//	transitgateway "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgateway"
+	//	transitgatewaypeeringattachment "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewaypeeringattachment"
+	//	transitgatewaypeeringattachmentaccepter "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewaypeeringattachmentaccepter"
+	//	transitgatewayprefixlistreference "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayprefixlistreference"
+	//	transitgatewayroute "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayroute"
+	//	transitgatewayroutetable "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayroutetable"
+	//	transitgatewayroutetableassociation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayroutetableassociation"
+	//	transitgatewayroutetablepropagation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayroutetablepropagation"
+	//	transitgatewayvpcattachment "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayvpcattachment"
+	//	transitgatewayvpcattachmentaccepter "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/transitgatewayvpcattachmentaccepter"
+	//	volumeattachment "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/volumeattachment"
+	//	vpc "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpc"
+	//	vpcdhcpoptions "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcdhcpoptions"
+	//	vpcdhcpoptionsassociation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcdhcpoptionsassociation"
+	//	vpcendpoint "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcendpoint"
+	//	vpcendpointconnectionnotification "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcendpointconnectionnotification"
+	//	vpcendpointroutetableassociation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcendpointroutetableassociation"
+	//	vpcendpointservice "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcendpointservice"
+	//	vpcendpointserviceallowedprincipal "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcendpointserviceallowedprincipal"
+	//	vpcendpointsubnetassociation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcendpointsubnetassociation"
+	//	vpcipv4cidrblockassociation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcipv4cidrblockassociation"
+	//	vpcpeeringconnection "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcpeeringconnection"
+	//	vpcpeeringconnectionaccepter "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcpeeringconnectionaccepter"
+	//	vpcpeeringconnectionoptions "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpcpeeringconnectionoptions"
+	//	vpnconnection "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpnconnection"
+	//	vpnconnectionroute "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpnconnectionroute"
+	//	vpngateway "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpngateway"
+	//	vpngatewayattachment "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpngatewayattachment"
+	//	vpngatewayroutepropagation "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ec2/vpngatewayroutepropagation"
+	//	lifecyclepolicyecr "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecr/lifecyclepolicy"
+	//	registrypolicy "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecr/registrypolicy"
+	//	replicationconfiguration "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecr/replicationconfiguration"
+	//	repositoryecr "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecr/repository"
+	//	repositorypolicy "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecr/repositorypolicy"
+	//	repositoryecrpublic "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecrpublic/repository"
+	//	capacityprovider "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecs/capacityprovider"
+	//	clusterecs "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecs/cluster"
+	//	serviceecs "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecs/service"
+	//	taskdefinition "github.com/crossplane-contrib/provider-jet-aws/internal/controller/ecs/taskdefinition"
+	//	accesspoint "github.com/crossplane-contrib/provider-jet-aws/internal/controller/efs/accesspoint"
+	//	backuppolicy "github.com/crossplane-contrib/provider-jet-aws/internal/controller/efs/backuppolicy"
+	//	filesystem "github.com/crossplane-contrib/provider-jet-aws/internal/controller/efs/filesystem"
+	//	filesystempolicy "github.com/crossplane-contrib/provider-jet-aws/internal/controller/efs/filesystempolicy"
+	//	mounttarget "github.com/crossplane-contrib/provider-jet-aws/internal/controller/efs/mounttarget"
+	//	addon "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/addon"
+	//	clustereks "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/cluster"
+	//	fargateprofile "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/fargateprofile"
+	//	identityproviderconfig "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/identityproviderconfig"
+	//	nodegroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/nodegroup"
+	//	clusterelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/cluster"
+	//	globalreplicationgroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/globalreplicationgroup"
+	//	parametergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/parametergroup"
+	//	replicationgroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/replicationgroup"
+	//	securitygroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/securitygroup"
+	//	subnetgroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/subnetgroup"
+	//	user "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/user"
+	//	usergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/usergroup"
 	//	applicationelasticbeanstalk "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticbeanstalk/application"
 	//	applicationversion "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticbeanstalk/applicationversion"
 	//	configurationtemplate "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticbeanstalk/configurationtemplate"
@@ -813,13 +872,13 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		//		deploymentstrategy.Setup,
 		//		environment.Setup,
 		//		hostedconfigurationversion.Setup,
-		//gatewayroute.Setup,
-		//mesh.Setup,
-		//routeappmesh.Setup,
-		//virtualgateway.Setup,
-		//virtualnode.Setup,
-		//virtualrouter.Setup,
-		//virtualservice.Setup,
+		gatewayroute.Setup,
+		mesh.Setup,
+		routeappmesh.Setup,
+		virtualgateway.Setup,
+		virtualnode.Setup,
+		virtualrouter.Setup,
+		virtualservice.Setup,
 		//		autoscalingconfigurationversion.Setup,
 		//		connection.Setup,
 		//		customdomainassociation.Setup,
@@ -1080,14 +1139,14 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		//		fargateprofile.Setup,
 		//		identityproviderconfig.Setup,
 		//		nodegroup.Setup,
-		clusterelasticache.Setup,
-		globalreplicationgroup.Setup,
-		parametergroupelasticache.Setup,
-		replicationgroup.Setup,
-		securitygroupelasticache.Setup,
-		subnetgroupelasticache.Setup,
-		user.Setup,
-		usergroupelasticache.Setup,
+		//		clusterelasticache.Setup,
+		//		globalreplicationgroup.Setup,
+		//		parametergroupelasticache.Setup,
+		//		replicationgroup.Setup,
+		//		securitygroupelasticache.Setup,
+		//		subnetgroupelasticache.Setup,
+		//		user.Setup,
+		//		usergroupelasticache.Setup,
 		//		applicationelasticbeanstalk.Setup,
 		//		applicationversion.Setup,
 		//		configurationtemplate.Setup,
