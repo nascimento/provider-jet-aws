@@ -17,9 +17,8 @@ limitations under the License.
 package controller
 
 import (
-	ctrl "sigs.k8s.io/controller-runtime"
-
 	"github.com/crossplane/terrajet/pkg/controller"
+	ctrl "sigs.k8s.io/controller-runtime"
 
 	//	analyzer "github.com/crossplane-contrib/provider-jet-aws/internal/controller/accessanalyzer/analyzer"
 	//	certificate "github.com/crossplane-contrib/provider-jet-aws/internal/controller/acm/certificate"
@@ -347,14 +346,16 @@ import (
 	//	fargateprofile "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/fargateprofile"
 	//	identityproviderconfig "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/identityproviderconfig"
 	//	nodegroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/eks/nodegroup"
-	//	clusterelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/cluster"
-	//	globalreplicationgroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/globalreplicationgroup"
-	//	parametergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/parametergroup"
-	//	replicationgroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/replicationgroup"
-	//	securitygroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/securitygroup"
-	//	subnetgroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/subnetgroup"
-	//	user "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/user"
-	//	usergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/usergroup"
+
+	clusterelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/cluster"
+	globalreplicationgroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/globalreplicationgroup"
+	parametergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/parametergroup"
+	replicationgroup "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/replicationgroup"
+	securitygroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/securitygroup"
+	subnetgroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/subnetgroup"
+	user "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/user"
+	usergroupelasticache "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticache/usergroup"
+
 	//	applicationelasticbeanstalk "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticbeanstalk/application"
 	//	applicationversion "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticbeanstalk/applicationversion"
 	//	configurationtemplate "github.com/crossplane-contrib/provider-jet-aws/internal/controller/elasticbeanstalk/configurationtemplate"
@@ -1139,14 +1140,14 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		//		fargateprofile.Setup,
 		//		identityproviderconfig.Setup,
 		//		nodegroup.Setup,
-		//		clusterelasticache.Setup,
-		//		globalreplicationgroup.Setup,
-		//		parametergroupelasticache.Setup,
-		//		replicationgroup.Setup,
-		//		securitygroupelasticache.Setup,
-		//		subnetgroupelasticache.Setup,
-		//		user.Setup,
-		//		usergroupelasticache.Setup,
+		clusterelasticache.Setup,
+		globalreplicationgroup.Setup,
+		parametergroupelasticache.Setup,
+		replicationgroup.Setup,
+		securitygroupelasticache.Setup,
+		subnetgroupelasticache.Setup,
+		user.Setup,
+		usergroupelasticache.Setup,
 		//		applicationelasticbeanstalk.Setup,
 		//		applicationversion.Setup,
 		//		configurationtemplate.Setup,
