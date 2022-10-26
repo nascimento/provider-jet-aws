@@ -1,7 +1,7 @@
 # ====================================================================================
 # Setup Project
 
-PLATFORMS := linux_amd64 linux_arm64
+PLATFORMS := linux_amd64
 include ../../../build/makelib/common.mk
 
 # ====================================================================================
@@ -27,6 +27,7 @@ img.build:
 		--build-arg TERRAFORM_PROVIDER_DOWNLOAD_NAME=$(TERRAFORM_PROVIDER_DOWNLOAD_NAME) \
 		--build-arg TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=$(TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX) \
 		--build-arg CROSSPLANE_PROVIDER_VERSION=$(VERSION) \
+		--platform linux/amd64 \
 		-t $(IMAGE) \
 		$(IMAGE_TEMP_DIR) || $(FAIL)
 	@$(OK) docker build $(IMAGE)

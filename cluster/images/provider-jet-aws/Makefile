@@ -1,7 +1,7 @@
 # ====================================================================================
 # Setup Project
 
-PLATFORMS := linux_amd64 linux_arm64
+PLATFORMS := linux_amd64
 include ../../../build/makelib/common.mk
 
 # ====================================================================================
@@ -25,6 +25,7 @@ img.build:
 	@docker build $(BUILD_ARGS) \
 		--build-arg ARCH=$(ARCH) \
 		--build-arg TINI_VERSION=$(TINI_VERSION) \
+		--platform linux/amd64 \
 		-t $(IMAGE) \
 		$(IMAGE_TEMP_DIR) || $(FAIL)
 	@$(OK) docker build $(IMAGE)

@@ -5,8 +5,13 @@
 export BUILD_REGISTRY=nascimento
 export DOCKER_REGISTRY=nascimento
 export REGISTRIES=nascimento
-export VERSION=v0.5.0-rede
+export VERSION=v0.6.0-rede
 export BUILDER_HOME=/tmp/upbound
+export OS=linux
+export ARCH=amd64
+export TARGETARCH=amd64
+export HOSTOS=linux
+
 
 crds=( dynamodb glue kinesis kms lambda rds s3 secretsmanager sns sqs ec2 elasticache )
 
@@ -42,14 +47,18 @@ sed -e "/	providerconfig\.Setup/ s/\/\///" -i.backup ./internal/controller/zz_se
 
 > Verificar se existem imports perdidos no `./internal/controller/zz_setup.go`
 
-make build -j4 # make build.all -j4 # AMD and ARM
-make publish -j4
+PLATFORM=linux_amd64 build
+PLATFORMS=linux_amd64 make publish
 
-docker manifest create nascimento/provider-jet-aws-controller:${VERSION} --amend nascimento/provider-jet-aws-controller-amd64:${VERSION} --amend nascimento/provider-jet-aws-controller-arm64:${VERSION}
-docker manifest push nascimento/provider-jet-aws-controller:${VERSION}
+docker manifest create "nascimento/provider-jet-aws-controller:${VERSION}" --amend "nascimento/provider-jet-aws-controller-amd64:${VERSION}"
+docker manifest annotate --arch amd64 --os linux "nascimento/provider-jet-aws-controller:${VERSION}" "nascimento/provider-jet-aws-controller-amd64:${VERSION}"
+docker manifest inspect "nascimento/provider-jet-aws-controller:${VERSION}"
+docker manifest push "nascimento/provider-jet-aws-controller:${VERSION}"
 
-docker manifest create nascimento/provider-jet-aws:${VERSION} --amend nascimento/provider-jet-aws-amd64:${VERSION} --amend nascimento/provider-jet-aws-arm64:${VERSION}
-docker manifest push nascimento/provider-jet-aws:${VERSION}
+docker manifest create "nascimento/provider-jet-aws:${VERSION}" --amend "nascimento/provider-jet-aws-amd64:${VERSION}" 
+docker manifest annotate --arch amd64 --os linux "nascimento/provider-jet-aws:${VERSION}" "nascimento/provider-jet-aws-amd64:${VERSION}"
+docker manifest inspect "nascimento/provider-jet-aws:${VERSION}"
+docker manifest push "nascimento/provider-jet-aws:${VERSION}"
 
 ```
 
